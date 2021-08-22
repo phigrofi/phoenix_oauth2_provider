@@ -71,6 +71,13 @@ defmodule PhoenixOauth2Provider.Router do
           get "/:code", AuthorizationController, :show
           delete "/", AuthorizationController, :delete
         end
+      end
+    end
+  end
+
+  defmacro oauth_application_routes(options \\ []) do
+    quote location: :keep do
+      oauth_scope unquote(options), @phoenix_oauth2_provider_config do
         resources "/applications", ApplicationController, param: "uid"
         resources "/authorized_applications", AuthorizedApplicationController, only: [:index, :delete], param: "uid"
       end
